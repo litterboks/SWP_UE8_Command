@@ -1,6 +1,8 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import command.Command;
+
 public class Main {
 
 	public static void main(final String[] args) {
@@ -10,7 +12,7 @@ public class Main {
 		launcher.add("Pickaxe Knight");
 		launcher.add("Bright Souls 3");
 		launcher.add("Rocket League of Extraordinary Gentlemen");
-
+		
 		int gameId = 0;
 		Scanner reader = new Scanner(System.in);
 
@@ -39,19 +41,23 @@ public class Main {
 
 				switch (actionId) {
 				case 1:
-					launcher.install(gameId);
+					Command<Launcher> install = new InstallCommand(launcher, gameId);
+					install.execute();
 					break;
 				case 2:
-					launcher.play(gameId);
+					Command<Launcher> play = new PlayCommand(launcher, gameId);
+					play.execute();
 					break;
 				case 3:
-					launcher.quit(gameId);
-					break;
+					Command<Launcher> quit = new PlayCommand(launcher, gameId);
+					quit.undo();
 				case 4:
-					launcher.update(gameId);
+					Command<Launcher> update = new UpdateCommand(launcher, gameId);
+					update.execute();
 					break;
 				case 5:
-					launcher.uninstall(gameId);
+					Command<Launcher> uninstall = new InstallCommand(launcher, gameId);
+					uninstall.undo();
 				}
 			}
 		}
